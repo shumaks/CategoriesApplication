@@ -3,6 +3,7 @@ package com.vkcup.categoriesapplication.screens.categories.ui
 import android.annotation.SuppressLint
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -28,30 +29,40 @@ fun CategoriesScreenView(viewModel: CategoriesViewModel) {
     viewModel.getCategories()
 
     MaterialTheme {
-        val categories = viewModel.categoriesListStateFlow.collectAsState().value
-
-        Column(
+        Box(
             modifier = Modifier
-                .padding(top = CategoriesScreenTopPadding, start = CategoriesScreenStartEndPadding, end = CategoriesScreenStartEndPadding),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .background(Color.Black)
         ) {
+            val categories = viewModel.categoriesListStateFlow.collectAsState().value
 
-            HeaderView(viewModel)
-
-            LazyHorizontalStaggeredGrid(
-                rows = StaggeredGridCells.Adaptive(minSize = CategoriesStaggeredGridMinSize),
-                horizontalArrangement = Arrangement.spacedBy(CategoriesStaggeredGridArrangement),
+            Column(
                 modifier = Modifier
-                    .height(CategoriesStaggeredGridHeight)
-                    .fillMaxWidth()
+                    .padding(
+                        top = CategoriesScreenTopPadding,
+                        start = CategoriesScreenStartEndPadding,
+                        end = CategoriesScreenStartEndPadding
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                items(categories) { item ->
-                    ItemView(item, viewModel)
-                }
-            }
 
-            if (categories.any { it.isSelected }) {
-                ButtonContinue(viewModel)
+                HeaderView(viewModel)
+
+                LazyHorizontalStaggeredGrid(
+                    rows = StaggeredGridCells.Adaptive(minSize = CategoriesStaggeredGridMinSize),
+                    horizontalArrangement = Arrangement.spacedBy(CategoriesStaggeredGridArrangement),
+                    modifier = Modifier
+                        .height(CategoriesStaggeredGridHeight)
+                        .fillMaxWidth()
+                ) {
+                    items(categories) { item ->
+                        ItemView(item, viewModel)
+                    }
+                }
+
+                if (categories.any { it.isSelected }) {
+                    ButtonContinue(viewModel)
+                }
             }
         }
     }
