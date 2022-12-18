@@ -30,9 +30,7 @@ fun CategoriesScreenView(viewModel: CategoriesViewModel) {
 
     MaterialTheme {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black)
+            modifier = Modifier.background(Color.Black).fillMaxSize()
         ) {
             val categories = viewModel.categoriesListStateFlow.collectAsState().value
 
